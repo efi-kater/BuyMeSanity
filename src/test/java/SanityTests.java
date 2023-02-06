@@ -103,7 +103,7 @@ public class SanityTests {
         try {
             homePage.clickAmountDd();
             test.info("Clicked amount dd");
-            homePage.clickAmountOption99_199();
+            homePage.clickAmountOption100_199();
             test.info("Clicked 100-199");
             homePage.clickRegionDd();
             test.info("clicked on region dd");

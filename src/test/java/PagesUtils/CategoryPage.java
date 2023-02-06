@@ -23,7 +23,7 @@ public class CategoryPage extends BasePage {
         WebDriverWait webDriverWait = new WebDriverWait(driver,Duration.ofSeconds(10));
         webDriverWait.until(ExpectedConditions.elementToBeClickable(taizuCard));
         super.clickElement(taizuCard);
-    }
+    }//click on Taizu gift card
 
 
 

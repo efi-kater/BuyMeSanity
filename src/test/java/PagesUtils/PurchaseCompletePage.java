@@ -33,52 +33,52 @@ public class PurchaseCompletePage extends BasePage {
 
     public String getPurchaseGiftLabel() {
         return super.getWebElement(purchaseGiftLabel).getText();
-    }
+    }// get text of purchase page label
     public void clickToSomeoneElseBtn(){
         super.clickElement(toSomeoneElseBtn);
-    }
+    } // click someone else radio button
 
     public void clickSmsBtn(){
         WebDriverWait webDriverWait = new WebDriverWait(driver,Duration.ofSeconds(10));
         webDriverWait.until(ExpectedConditions.elementToBeClickable(smsBtn));
         super.clickElement(smsBtn);
-    }
+    } // click sms button
 
     public void clickNowRb(){
         WebDriverWait webDriverWait = new WebDriverWait(driver,Duration.ofSeconds(10));
         webDriverWait.until(ExpectedConditions.elementToBeClickable(nowRb));
         super.clickElement(nowRb);
-    }
+    } //click now radio button
     public void clickBDSelect(){
         WebDriverWait webDriverWait = new WebDriverWait(driver,Duration.ofSeconds(10));
         webDriverWait.until(ExpectedConditions.elementToBeClickable(bDSelect));
         super.clickElement(bDSelect);
-    }
+    }// click birthday selection
     public void clickEventDd(){
         super.clickElement(eventDd);
-    }
+    } // click event type drop down
 
     public void clickContinueBtn(){
         super.clickElement(continueBtn);
-    }
+    } //click continue button
 
     public void setToTb(String name){
         super.sendKeysToElement(RelativeLocator.with(toTb).below(toSomeoneElseBtn),name);
-    }
+    } // send keys to recipient text box
 
     public void setSmsTb(String sms){
         super.sendKeysToElement(smsTb,sms);
-    }
+    } // send keys to sms text box
 
     public String getToTb(){
         return super.getWebElement(RelativeLocator.with(toTb).below(toSomeoneElseBtn)).getAttribute("value");
-    }
+    } // get the text from recipient text box
 
     public String getFromTb(){
         return super.getWebElement(fromTb).getAttribute("value");
-    }
+    } //get text from sender text box
 
     public void setWishTa(String wish){
         super.sendKeysToElement(wishTa,wish);
-    }
+    } // send keys to wish
 }

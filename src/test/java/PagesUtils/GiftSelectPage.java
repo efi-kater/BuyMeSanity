@@ -22,13 +22,13 @@ public class GiftSelectPage extends BasePage {
 
     public void setEnterAmountTb(String amount){
         super.sendKeysToElement(enterAmountTb, amount);
-    }
+    }//send keys to amount text box
 
     public void clickSelectBtn(){
         WebDriverWait webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(10));
         webDriverWait.until(ExpectedConditions.elementToBeClickable(enterAmountTb));
         super.clickElement(SelectBtn);
-    }
+    } // click select button
 
 
 
