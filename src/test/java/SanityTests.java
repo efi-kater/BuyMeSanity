@@ -60,7 +60,13 @@ public class SanityTests {
 
     @Test
     public void registrationFlow()  {
-            HomePage homePage = new HomePage();
+        try {
+           DbUtils.insertTestToHistory(conn);
+
+            } catch (SQLException ee){
+            ee.printStackTrace();
+        }
+        HomePage homePage = new HomePage();
         try {
             homePage.clickSigninBtn();
             test.info("Clicked Signin/Register button");

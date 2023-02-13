@@ -1,6 +1,8 @@
 package PagesUtils;
 
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class DbUtils {
     private static final String USER_NAME = "sql12596781";
@@ -15,6 +17,11 @@ public class DbUtils {
         try {
             Connection c=getConnection();
             System.out.println(c);
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+            String data = String.valueOf(dtf.format(now));
+            System.out.println(data);
+
             c.close();
         } catch (SQLException e){
             e.printStackTrace();
@@ -32,8 +39,12 @@ public class DbUtils {
 
         return conn;
 }
-    public void insertUser(Connection con, int id, String name, String data) throws SQLException {
-        String statementToExecute = "INSERT INTO " + DATABASE_NAME + ".config_db (`config_id`, `config_name`,`config_data` ) VALUES ('" + id + "', '" + name + "', '" + data + "');";
+    public static void insertTestToHistory(Connection con) throws SQLException {
+        int id = getHistoryLine(con)+1;
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        String data = String.valueOf(dtf.format(now));
+        String statementToExecute = "INSERT INTO " + DATABASE_NAME + ".history (`test_id`, `test_date` ) VALUES ('" + id + "', '" + data + "');";
         con.createStatement().execute(statementToExecute);
     }
 
@@ -77,8 +88,8 @@ public class DbUtils {
         return browser;
     }
 
-    public int getHistoryLine(Connection con) throws SQLException {
-        String statementToExecute = "SELECT * FROM " + this.DATABASE_NAME + ".history;";
+    public static int getHistoryLine(Connection con) throws SQLException {
+        String statementToExecute = "SELECT * FROM " + DATABASE_NAME + ".history;";
         int line = 0;
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery(statementToExecute);
