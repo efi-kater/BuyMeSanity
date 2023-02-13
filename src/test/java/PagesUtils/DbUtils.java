@@ -40,12 +40,13 @@ public class DbUtils {
         return conn;
 }
     public static void insertTestToHistory(Connection con) throws SQLException {
-        int id = getHistoryLine(con)+1;
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-        String data = String.valueOf(dtf.format(now));
-        String statementToExecute = "INSERT INTO " + DATABASE_NAME + ".history (`test_id`, `test_date` ) VALUES ('" + id + "', '" + data + "');";
-        con.createStatement().execute(statementToExecute);
+           int id = getHistoryLine(con)+1;
+           DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+           LocalDateTime now = LocalDateTime.now();
+           String data = String.valueOf(dtf.format(now));
+           String statementToExecute = "INSERT INTO " + DATABASE_NAME + ".history (`test_id`, `test_date` ) VALUES ('" + id + "', '" + data + "');";
+           con.createStatement().execute(statementToExecute);
+
     }
 
     public static String getBrowser(Connection con) throws SQLException {
@@ -102,4 +103,6 @@ public class DbUtils {
         rs.close();
         return line;
     }
+
+
 }

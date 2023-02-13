@@ -13,11 +13,14 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 import static org.testng.Assert.assertEquals;
@@ -65,6 +68,12 @@ public class SanityTests {
 
             } catch (SQLException ee){
             ee.printStackTrace();
+            try {
+                writeToFile();
+            } catch (IOException j){
+                j.printStackTrace();
+            }
+
         }
         HomePage homePage = new HomePage();
         try {
@@ -108,12 +117,24 @@ public class SanityTests {
     @Test (dependsOnMethods = { "sendPresent" })
     public void presentSearch()  {
         try {
-            driver.get(DbUtils.getSite(conn));
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
+            DbUtils.insertTestToHistory(conn);
 
+        } catch (SQLException ee){
+            ee.printStackTrace();
+            try {
+                writeToFile();
+            } catch (IOException j){
+                j.printStackTrace();
+            }
+
+        }
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        try {
+            DbUtils.insertTestToHistory(conn);
+
+        } catch (SQLException ee){
+            ee.printStackTrace();
+        }
         HomePage homePage = new HomePage();
         try {
             homePage.clickAmountDd();
@@ -149,6 +170,18 @@ public class SanityTests {
 
     @Test (dependsOnMethods = { "registrationFlow" })
     public void categoryGiftSelection(){
+        try {
+            DbUtils.insertTestToHistory(conn);
+
+        } catch (SQLException ee){
+            ee.printStackTrace();
+            try {
+                writeToFile();
+            } catch (IOException j){
+                j.printStackTrace();
+            }
+
+        }
         HomePage homePage = new HomePage();
         try {
             homePage.clickBestGiftCard();
@@ -182,6 +215,18 @@ public class SanityTests {
 
     @Test (dependsOnMethods = { "categoryGiftSelection" })
     public void sendPresent(){
+        try {
+            DbUtils.insertTestToHistory(conn);
+
+        } catch (SQLException ee){
+            ee.printStackTrace();
+            try {
+                writeToFile();
+            } catch (IOException j){
+                j.printStackTrace();
+            }
+
+        }
         try {
             WebDriverWait webDriverWait = new WebDriverWait(driver,Duration.ofSeconds(10));
             PurchaseCompletePage purchaseCompletePage = new PurchaseCompletePage();
@@ -251,6 +296,17 @@ public class SanityTests {
         }
         return ImagesPath + ".png";
     }
+    public static void writeToFile() throws IOException {
+        String filePath = "/Users/efikater/Downloads/IdeaProjects-main/BuyMeSanity/src/Output/Tests Runs.txt";
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        String data = dtf.format(now);
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true));
+        writer.append(data);
+        writer.append(System.lineSeparator());
+        writer.close();
+
+    }//gets the desired file name and content and creates/appends to existing file//
 }
 
 
