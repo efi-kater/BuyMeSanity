@@ -16,6 +16,7 @@ import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.*;
 import java.time.Duration;
 import java.util.Random;
 
@@ -30,7 +31,9 @@ public class SanityTests {
     // creates a toggle for the given test, adds all log events under it
     private static ExtentTest test;
 
-    private String timeNow = "/Users/efikater/Downloads/IdeaProjects-main/BuyMeSanity/src/Output" + String.valueOf(System.currentTimeMillis());
+    private String timeNow = "/Users/efikater/Downloads/IdeaProjects-main/BuyMeSanity/src/Output/" + String.valueOf(System.currentTimeMillis());
+
+    private Connection conn;
 
 
     public SanityTests() {
@@ -47,8 +50,9 @@ public class SanityTests {
 
         // log results
         test.log(Status.INFO, "@Before class");
+        conn = DbUtils.getConnection();
         driver = DriverSingleton.getDriverInstance();
-        driver.get(DriverSingleton.getData("site"));
+        driver.get(DbUtils.getSite(conn));
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
 
@@ -95,9 +99,14 @@ public class SanityTests {
 }
 
 
-    @Test (dependsOnMethods = { "registrationFlow" })
+    @Test (dependsOnMethods = { "sendPresent" })
     public void presentSearch()  {
-        driver.get(DriverSingleton.getData("site"));
+        try {
+            driver.get(DbUtils.getSite(conn));
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         HomePage homePage = new HomePage();
         try {
@@ -132,10 +141,8 @@ public class SanityTests {
         }
     }
 
-    @Test (dependsOnMethods = { "presentSearch" })
+    @Test (dependsOnMethods = { "registrationFlow" })
     public void categoryGiftSelection(){
-        driver.get(DriverSingleton.getData("site"));
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         HomePage homePage = new HomePage();
         try {
             homePage.clickBestGiftCard();
@@ -205,11 +212,13 @@ public class SanityTests {
     }
 
     @AfterClass
-    public void tearDown(){
+    public void tearDown() throws SQLException {
         test.log(Status.INFO, "@After test " + "After test method");
         driver.quit();
         // build and flush report
         extent.flush();
+        conn.close();
+
     }
 
     private String generateRandomEmail() {
@@ -237,3 +246,5 @@ public class SanityTests {
         return ImagesPath + ".png";
     }
 }
+
+
